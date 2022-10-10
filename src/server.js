@@ -1,23 +1,41 @@
-// use the express library
 const express = require('express');
-
-// create a new server application
+const port = process.env.PORT || 3000;
+const cookieParser = require('cookie-parser');
 const app = express();
 
-// Define the port we will listen on
-// (it will attempt to read an environment global
-// first, that is for when this is used on the real
-// world wide web).
-const port = process.env.PORT || 3000;
+app.use(cookieParser());
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 
+
+let nextVisitorId = 1;
 // The main page of our website
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  let hasVisited = false;
+  let visitorId = nextVisitorId;
+  if (req.cookies['visited']) {
+    hasVisited = true;
+    visitorId = req.cookies['visitorId'];
+  }
+  else{
+    visitorId++;
+    hasVisited = false;
+  }
+
+  res.cookie('visitorId', visitorId);
+  res.cookie('visited', Date.now().toString());
+  
+  res.render('welcome', {
+    name: req.query.name || "World",
+    datetime_now: new Date().toLocaleString(),
+    visitorID: visitorId,
+    lastvisit: Math.round(((new Date() - req.cookies['visited'])/1000)).toLocaleString(),
+    hasVisited: hasVisited,
+  },console.log(req.cookies));
+
 });
 
-// Start listening for network connections
 app.listen(port);
 
-// Printout for readability
 console.log("Server Started!");
