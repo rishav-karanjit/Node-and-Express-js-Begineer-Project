@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
     visitorId = req.cookies['visitorId'];
   }
   else{
-    visitorId++;
+    nextVisitorId++;
     hasVisited = false;
   }
 
@@ -65,7 +65,7 @@ app.get("/trivia", async (req, res) => {
 
   const Triviaresults = content.results[0]
   // console.log(Triviaresults)
-  
+
   var AnswersList = []
   AnswersList.push(Triviaresults.correct_answer);
   IncorrectAnswers = AnswersList.concat(Triviaresults.incorrect_answers);
