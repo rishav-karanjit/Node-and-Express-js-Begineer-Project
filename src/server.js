@@ -64,7 +64,8 @@ app.get("/trivia", async (req, res) => {
   // res.send(JSON.stringify(content, 2));
 
   const Triviaresults = content.results[0]
-  console.log(Triviaresults)
+  // console.log(Triviaresults)
+  
   var AnswersList = []
   AnswersList.push(Triviaresults.correct_answer);
   IncorrectAnswers = AnswersList.concat(Triviaresults.incorrect_answers);
